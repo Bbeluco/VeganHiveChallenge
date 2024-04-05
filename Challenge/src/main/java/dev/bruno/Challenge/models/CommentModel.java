@@ -18,4 +18,39 @@ public class CommentModel {
     private String comment;
     @Relationship("RELATED_TO")
     private PostsModel post;
+
+    @Relationship("WAS_COMMENTED_BY")
+    private UsersModel user;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public PostsModel getPost() {
+        return post;
+    }
+
+    public void setPost(PostsModel post) {
+        this.post = post;
+    }
+
+    public UsersModel getUser() {
+        return user;
+    }
+
+    public void setUser(UsersModel user) {
+        this.user = user;
+    }
 }

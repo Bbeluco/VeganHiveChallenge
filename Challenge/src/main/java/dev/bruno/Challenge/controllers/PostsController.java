@@ -1,11 +1,9 @@
 package dev.bruno.Challenge.controllers;
 
-import dev.bruno.Challenge.DTOs.ErrorMessageDTO;
-import dev.bruno.Challenge.DTOs.LikesDTO;
-import dev.bruno.Challenge.DTOs.PostCreationDTO;
+import dev.bruno.Challenge.DTOs.*;
+import dev.bruno.Challenge.models.CommentModel;
 import dev.bruno.Challenge.models.PostsModel;
 import dev.bruno.Challenge.models.UsersModel;
-import dev.bruno.Challenge.repositories.UserRepository;
 import dev.bruno.Challenge.services.PostService;
 import dev.bruno.Challenge.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +61,29 @@ public class PostsController {
     @GetMapping()
     public ResponseEntity<List<PostsModel>> getAllPosts() {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<?> commentOnPost(@RequestBody CreateCommentDTO dto) {
+        UsersModel userThatWillCommentOnPost = userServices.doUserExists(dto.getIdUser());
+        if(userThatWillCommentOnPost == null) {
+            ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("User do not exists");
+            return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
+        }
+
+        PostsModel post = postService.doPostExists(dto.getIdPost());
+        if(post == null) {
+            ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("Post do not exists");
+            return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
+        }
+
+        CommentModel comment = postService.commentOnPost(userThatWillCommentOnPost, post, dto.getComment());
+
+
+        return new ResponseEntity<>(new CommentResponseDTO(comment.getId()
+                , comment.getComment()
+                , comment.getPost().getId()
+                , userThatWillCommentOnPost.getUsername()), HttpStatus.CREATED);
+
     }
 }

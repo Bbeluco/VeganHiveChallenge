@@ -20,6 +20,9 @@ public class PostsModel {
     @Relationship("WAS_LIKED_BY")
     private List<UsersModel> likes = new ArrayList<>();
 
+    @Relationship("HAS_COMMENTS")
+    private List<CommentModel> comments = new ArrayList<>();
+
     public PostsModel() {
     }
 
@@ -59,8 +62,19 @@ public class PostsModel {
     public void setLikes(List<UsersModel> likes) {
         this.likes = likes;
     }
+    public List<CommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentModel> comments) {
+        this.comments = comments;
+    }
 
     public void addLikeToPost(UsersModel model) {
         this.likes.add(model);
+    }
+
+    public void addCommentToPost(CommentModel model) {
+        this.comments.add(model);
     }
 }

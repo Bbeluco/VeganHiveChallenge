@@ -17,9 +17,6 @@ public class UsersModel {
     private String username;
     private String password;
 
-    @Relationship(type = "HAS_THE_COMMENT")
-    private List<CommentModel> comments;
-
     public UsersModel() {
     }
 
@@ -50,13 +47,5 @@ public class UsersModel {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<CommentModel> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentModel> comments) {
-        this.comments = comments;
     }
 }
