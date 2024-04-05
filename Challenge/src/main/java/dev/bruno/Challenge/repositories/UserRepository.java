@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface UserRepository extends Neo4jRepository<UsersModel, Long> {
 
     UsersModel findUserById(Long id);
+    Optional<UsersModel> findUserByUsername(String username);
 }
