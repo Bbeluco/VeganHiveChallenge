@@ -1,5 +1,6 @@
 package dev.bruno.Challenge.controllers;
 
+
 import dev.bruno.Challenge.DTOs.*;
 import dev.bruno.Challenge.models.CommentModel;
 import dev.bruno.Challenge.models.PostsModel;
@@ -10,11 +11,9 @@ import dev.bruno.Challenge.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("posts")
@@ -32,7 +31,7 @@ public class PostsController {
 
     @PostMapping
     public ResponseEntity<?> createNewPost(@RequestBody PostCreationDTO dto, @RequestHeader("Authorization") String authToken) {
-        String username = jwtService.extractUsername(authToken);
+        String username = jwtService.extractUsername(filterHeaderInfo(authToken));
 
         UsersModel creator = userServices.doUserExists(username);
         if(creator == null) {
@@ -45,9 +44,13 @@ public class PostsController {
         return new ResponseEntity<>(postService.createOrUpdatePost(newPost), HttpStatus.CREATED);
     }
 
+    private String filterHeaderInfo(String authToken) {
+        return authToken.split("Bearer ")[1];
+    }
+
     @PutMapping("/likes")
     public ResponseEntity<?> likePost(@RequestBody LikesDTO dto, @RequestHeader("Authorization") String authToken) {
-        String username = jwtService.extractUsername(authToken);
+        String username = jwtService.extractUsername(filterHeaderInfo(authToken));
 
         UsersModel user = userServices.doUserExists(username);
         if(user == null) {
@@ -73,7 +76,7 @@ public class PostsController {
 
     @PostMapping("/comment")
     public ResponseEntity<?> commentOnPost(@RequestBody CreateCommentDTO dto, @RequestHeader("Authorization") String authToken) {
-        String username = jwtService.extractUsername(authToken);
+        String username = jwtService.extractUsername(filterHeaderInfo(authToken));
 
         UsersModel userThatWillCommentOnPost = userServices.doUserExists(username);
         if(userThatWillCommentOnPost == null) {
