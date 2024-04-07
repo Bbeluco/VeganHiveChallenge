@@ -41,7 +41,13 @@ public class PostsController {
 
         PostsModel newPost = new PostsModel(dto.getContent(), creator);
 
-        return new ResponseEntity<>(postService.createOrUpdatePost(newPost), HttpStatus.CREATED);
+        PostsModel post = postService.createOrUpdatePost(newPost);
+        CreateCommentResponseDTO responseDTO = new CreateCommentResponseDTO();
+        responseDTO.setId(post.getId());
+        responseDTO.setCreator(post.getCreator().getUsername());
+        responseDTO.setContent(post.getContent());
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     private String filterHeaderInfo(String authToken) {
@@ -65,13 +71,25 @@ public class PostsController {
         }
 
         post.addLikeToPost(user);
+        postService.createOrUpdatePost(post);
 
-        return new ResponseEntity<>(postService.createOrUpdatePost(post), HttpStatus.OK);
+        return ResponseEntity.ok("");
     }
 
     @GetMapping()
-    public ResponseEntity<List<PostsModel>> getAllPosts() {
-        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+    public ResponseEntity<AllPostsResponseDTO> getAllPosts() {
+        AllPostsResponseDTO responseDTO = new AllPostsResponseDTO();
+        for (PostsModel post : postService.getAllPosts()) {
+            PostDetailsDTO details = new PostDetailsDTO();
+            details.setId(post.getId());
+            details.setCreator(post.getCreator().getUsername());
+            details.setContent(post.getContent());
+            details.setLikes(post.getLikes().size());
+            responseDTO.addPostToResponse(details);
+        }
+
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/comment")
