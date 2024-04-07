@@ -1,13 +1,13 @@
 package dev.bruno.Challenge.DTOs;
 
-public class CreateUserDTO {
+public class LoginInfoDTO {
     private String username;
     private String password;
 
-    public CreateUserDTO() {
+    public LoginInfoDTO() {
     }
 
-    public CreateUserDTO(String username, String password) {
+    public LoginInfoDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

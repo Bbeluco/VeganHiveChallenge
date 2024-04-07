@@ -1,7 +1,6 @@
 package dev.bruno.Challenge.services;
 
-import dev.bruno.Challenge.DTOs.CreateUserDTO;
-import dev.bruno.Challenge.models.PostsModel;
+import dev.bruno.Challenge.DTOs.LoginInfoDTO;
 import dev.bruno.Challenge.models.UsersModel;
 import dev.bruno.Challenge.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class UserServices {
         return userRepository.findAll();
     }
 
-    public UsersModel addUser(CreateUserDTO dto) {
+    public UsersModel addUser(LoginInfoDTO dto) {
 
         if(doUserExists(dto.getUsername()) != null) {
             return null;
@@ -44,5 +43,18 @@ public class UserServices {
     public UsersModel doUserExists(String username) {
         Optional<UsersModel> user = userRepository.findUserByUsername(username);
         return user.orElse(null);
+    }
+
+    public UsersModel loginUser(LoginInfoDTO dto) {
+        Optional<UsersModel> user = userRepository.findUserByUsername(dto.getUsername());
+        if(user.isEmpty()) {
+            return null;
+        }
+
+        if(!passwordEncoder.matches(dto.getPassword(), user.get().getPassword())) {
+            return null;
+        }
+
+        return user.get();
     }
 }

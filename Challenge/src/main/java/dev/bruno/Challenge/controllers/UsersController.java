@@ -1,6 +1,6 @@
 package dev.bruno.Challenge.controllers;
 
-import dev.bruno.Challenge.DTOs.CreateUserDTO;
+import dev.bruno.Challenge.DTOs.LoginInfoDTO;
 import dev.bruno.Challenge.DTOs.ErrorMessageDTO;
 import dev.bruno.Challenge.DTOs.UserCreatedResponseDTO;
 import dev.bruno.Challenge.models.UsersModel;
@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("users")
@@ -30,7 +31,7 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createNewUser(@RequestBody CreateUserDTO dto) {
+    public ResponseEntity<?> createNewUser(@RequestBody LoginInfoDTO dto) {
         UsersModel newUser = userServices.addUser(dto);
         if(newUser == null) {
             ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("User already exists");
@@ -43,5 +44,21 @@ public class UsersController {
         responseDTO.setJwtToken(jwtService.generateToken(newUser));
 
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginInfoDTO dto) {
+        UsersModel user = userServices.loginUser(dto);
+        if(user == null) {
+            ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("User or password incorrect");
+            return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
+        }
+
+        UserCreatedResponseDTO responseDTO = new UserCreatedResponseDTO();
+        responseDTO.setId(user.getId());
+        responseDTO.setUsername(user.getUsername());
+        responseDTO.setJwtToken(jwtService.generateToken(user));
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
