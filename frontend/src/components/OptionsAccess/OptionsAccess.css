@@ -1,0 +1,16 @@
+.options {
+    display: flex;
+    background-color: rgba(197, 196, 196, 0.3) !important;
+    border-radius: 3px;
+}
+
+.button {
+    color: rgba(0, 0, 0, 0.3) !important;
+    background-color: inherit !important;
+    border-radius: 3px;
+}
+
+.button:hover,.button:active,.button:focus {
+    background: rgb(231, 165, 44) !important;
+    background-color: rgb(231, 165, 44) !important;
+}
