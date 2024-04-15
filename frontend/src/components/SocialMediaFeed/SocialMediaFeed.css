@@ -1,0 +1,13 @@
+.post {
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #d8d9da;
+    border-style: solid;
+    padding: 10px;
+}
+
+.interact-with-post-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

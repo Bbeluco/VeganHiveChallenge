@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { UsersAPI } from "../../apis/users/UsersAPI";
-import { IUserLoginInfo } from "../../apis/intefaces/IUserLoginInfo";
+import { Utils } from "../../utils/utils";
 
 function Login(): React.JSX.Element {
     const usernameFieldRef: any = useRef("");
@@ -17,7 +17,8 @@ function Login(): React.JSX.Element {
         try {
             const request = UsersAPI.login(usernameFieldRef.current.value, passwordFieldRef.current.value);
             request.then(response => {
-                console.log(response.jwtToken)
+                Utils.setupJwtInfo(response.jwtToken);
+                window.location.reload();
             })
         } catch(err) {
             console.log(err)

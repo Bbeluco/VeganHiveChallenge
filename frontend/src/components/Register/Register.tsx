@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { UsersAPI } from "../../apis/users/UsersAPI";
+import { Utils } from "../../utils/utils";
 
 function Register(): React.JSX.Element {
     const usernameInputRef: any = useRef("");
@@ -10,21 +11,20 @@ function Register(): React.JSX.Element {
 
     function registerUser() {
         if(!usernameInputRef || !passwordInputRef || !confirmPasswordInputref) {
-            alert("Fields not filled, please verify ")
+            alert("Fields not filled, please verify ");
             return;
         }
 
-        console.log("pass: " + passwordInputRef);
-        console.log("confirm: " + confirmPasswordInputref)
         if(passwordInputRef.current.value != confirmPasswordInputref.current.value) {
-            alert("Passwords are different, please verify")
+            alert("Passwords are different, please verify");
             return;
         }
 
         try {
             const request = UsersAPI.register(usernameInputRef.current.value, passwordInputRef.current.value);
             request.then(response => {
-                console.log(response.jwtToken)
+                Utils.setupJwtInfo(response.jwtToken);
+                window.location.reload();
             })
         } catch(err) {
             console.log(err)

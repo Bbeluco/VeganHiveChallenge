@@ -14,10 +14,12 @@ function UserAccess() {
 
 
     return (
-        <div className="form">
-            <OptionsAccess changeAccessOption={changeAccessOption}/>
+        <div className='Access'>
+            <div className="form">
+                <OptionsAccess changeAccessOption={changeAccessOption}/>
 
-            {optionAccess == "login" ? <Login /> : <Register />}
+                {optionAccess == "login" ? <Login /> : <Register />}
+            </div>
         </div>
     )
 }
