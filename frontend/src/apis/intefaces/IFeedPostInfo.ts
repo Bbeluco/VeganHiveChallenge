@@ -1,8 +1,8 @@
 export interface IFeedPostInfo {
-    posts: PostInfo[];
+    posts: IPostInfo[];
 }
 
-interface PostInfo {
+export interface IPostInfo {
     id: number,
     content: string,
     creator: string,

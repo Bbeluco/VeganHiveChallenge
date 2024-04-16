@@ -5,13 +5,15 @@ import "./SocialMediaFeed.css"
 import { IFeedPostInfo } from "../../apis/intefaces/IFeedPostInfo";
 
 interface ISocialMediaFeed {
-    posts: IFeedPostInfo | undefined
+    posts: IFeedPostInfo
 }
 
 function SocialMediaFeed({ posts }: ISocialMediaFeed): React.JSX.Element {
+
+
     return (
         <div className="feed">
-            {posts?.posts.map((post, index) => {
+            {posts.posts.map((post, index) => {
                 return (
                     <div key={index} className="post">
                         <div className="media">

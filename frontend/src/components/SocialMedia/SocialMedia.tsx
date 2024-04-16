@@ -2,13 +2,14 @@ import React from "react";
 import SocialMediaFeed from "../SocialMediaFeed/SocialMediaFeed";
 import SocialMediaCreatePosts from "../SocialMediaCreatePosts/SocialMediaCretePosts";
 import SocialMediaHeader from "../SocialMediaHeader/SocialMediaHeader";
-import { IFeedPostInfo } from "../../apis/intefaces/IFeedPostInfo";
+import { IFeedPostInfo, IPostInfo } from "../../apis/intefaces/IFeedPostInfo";
 
 interface ISocialMedia {
-    posts: IFeedPostInfo | undefined
+    posts: IFeedPostInfo
+    updateFeedPosts: (post: IPostInfo) => void;
 }
 
-function SocialMedia( { posts }: ISocialMedia): React.JSX.Element {
+function SocialMedia( { posts, updateFeedPosts }: ISocialMedia): React.JSX.Element {
     return (
         <div>
             <SocialMediaHeader />
@@ -19,7 +20,7 @@ function SocialMedia( { posts }: ISocialMedia): React.JSX.Element {
                         </div>
                     </div>
                     <div className="col-12 col-lg-6" >
-                        <SocialMediaCreatePosts />
+                        <SocialMediaCreatePosts updateFeedPosts={updateFeedPosts}/>
                         <br />
                         <SocialMediaFeed posts={posts}/>
                     </div>
