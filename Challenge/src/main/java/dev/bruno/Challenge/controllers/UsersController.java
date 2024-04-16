@@ -24,12 +24,13 @@ public class UsersController {
         this.jwtService = jwtService;
     }
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public ResponseEntity<List<UsersModel>> getAllUsers() {
         return new ResponseEntity<>(userServices.getAllUsers(), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> createNewUser(@RequestBody LoginInfoDTO dto) {
         UsersModel newUser = userServices.addUser(dto);
@@ -46,6 +47,7 @@ public class UsersController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginInfoDTO dto) {
         UsersModel user = userServices.loginUser(dto);

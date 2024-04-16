@@ -3,6 +3,7 @@ import SocialMediaFeed from "../SocialMediaFeed/SocialMediaFeed";
 import SocialMediaCreatePosts from "../SocialMediaCreatePosts/SocialMediaCretePosts";
 import SocialMediaHeader from "../SocialMediaHeader/SocialMediaHeader";
 import { IFeedPostInfo, IPostInfo } from "../../apis/intefaces/IFeedPostInfo";
+import "./SocialMedia.css"
 
 interface ISocialMedia {
     posts: IFeedPostInfo
@@ -11,7 +12,7 @@ interface ISocialMedia {
 
 function SocialMedia( { posts, updateFeedPosts }: ISocialMedia): React.JSX.Element {
     return (
-        <div>
+        <div className="socialMedia">
             <SocialMediaHeader />
             <div className="container">
                 <div className="row">

@@ -29,6 +29,7 @@ public class PostsController {
         this.jwtService = jwtService;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping
     public ResponseEntity<?> createNewPost(@RequestBody PostCreationDTO dto, @RequestHeader("Authorization") String authToken) {
         String username = jwtService.extractUsername(filterHeaderInfo(authToken));
@@ -42,10 +43,11 @@ public class PostsController {
         PostsModel newPost = new PostsModel(dto.getContent(), creator);
 
         PostsModel post = postService.createOrUpdatePost(newPost);
-        CreateCommentResponseDTO responseDTO = new CreateCommentResponseDTO();
+        PostCreationResponseDTO responseDTO = new PostCreationResponseDTO();
         responseDTO.setId(post.getId());
         responseDTO.setCreator(post.getCreator().getUsername());
         responseDTO.setContent(post.getContent());
+        responseDTO.setLikes(post.getLikes().size());
 
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
@@ -54,6 +56,7 @@ public class PostsController {
         return authToken.split("Bearer ")[1];
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/likes")
     public ResponseEntity<?> likePost(@RequestBody LikesDTO dto, @RequestHeader("Authorization") String authToken) {
         String username = jwtService.extractUsername(filterHeaderInfo(authToken));
@@ -76,6 +79,7 @@ public class PostsController {
         return ResponseEntity.ok("");
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping()
     public ResponseEntity<AllPostsResponseDTO> getAllPosts() {
         AllPostsResponseDTO responseDTO = new AllPostsResponseDTO();
@@ -92,6 +96,7 @@ public class PostsController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/comment")
     public ResponseEntity<?> commentOnPost(@RequestBody CreateCommentDTO dto, @RequestHeader("Authorization") String authToken) {
         String username = jwtService.extractUsername(filterHeaderInfo(authToken));
