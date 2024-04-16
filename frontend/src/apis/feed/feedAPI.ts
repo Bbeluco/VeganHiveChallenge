@@ -1,4 +1,5 @@
 import { Utils } from "../../utils/utils";
+import { IFeedPostInfo } from "../intefaces/IFeedPostInfo";
 
 const baseURL = "http://localhost:8080/posts";
 
@@ -12,6 +13,6 @@ export const FeedAPI = {
             method: "GET"
         })
 
-        return response.json();
+        return response.json() as Promise<IFeedPostInfo>;
     }
 }
