@@ -15,4 +15,15 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    width: 100%;
+}
+
+.option {
+    text-align: center;
+}
+
+.likes {
+    color: #fff !important;
+	background-color: #212529 !important;
+	border-color: #212529 !important;
 }
