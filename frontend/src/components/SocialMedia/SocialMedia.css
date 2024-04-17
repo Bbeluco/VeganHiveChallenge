@@ -2,4 +2,6 @@
     background-image: url("https://storage.googleapis.com/veganhive.com/assets/web/presentation/presentation-pattern.svg");
     background-size: 100% auto;
     background-repeat: repeat-y;
+    min-height: 100vh;
+    height: 100%;
 }
