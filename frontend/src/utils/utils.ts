@@ -1,6 +1,11 @@
 export const Utils = {
     setupJwtInfo: function(jwtToken: string) {
-        document.cookie = "jwtToken=\"" + jwtToken + "\";SameSite=None; Secure";
+        let now = new Date();
+        let time = now.getTime();
+        let expireTime = time + 1000*36000;
+        now.setTime(expireTime);
+
+        document.cookie = "jwtToken=\"" + jwtToken + "\";SameSite=None; Secure; expires=" + now.toUTCString()+";";
     },
     getJwtInfo: function(): string {
         let cookieInfos: string[] = document.cookie.split(';');
