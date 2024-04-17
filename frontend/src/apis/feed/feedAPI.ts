@@ -28,5 +28,32 @@ export const FeedAPI = {
         })
 
         return response.json() as Promise<IPostInfo>;
+    },
+
+    likePost: async function(idPost: number) {
+        const response = await fetch(baseURL + "/likes", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + Utils.getJwtInfo()
+            },
+            method: "PUT",
+            body: JSON.stringify({ idPost })
+        })
+
+        return response;
+    },
+
+    getSpecificPost: async function(idPost: number) {
+        const response = await fetch(baseURL + "/" + idPost, {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + Utils.getJwtInfo()
+            },
+            method: "GET"
+        })
+
+        return response.json() as Promise<IPostInfo>;
     }
 }

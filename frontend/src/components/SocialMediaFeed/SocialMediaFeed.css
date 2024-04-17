@@ -22,7 +22,19 @@
     text-align: center;
 }
 
+.btn:hover {
+    color: inherit !important;
+	background-color: inherit !important;
+	border-color: inherit !important;
+}
+
 .likes {
+    color: #fff !important;
+	background-color: #212529 !important;
+	border-color: #212529 !important;
+}
+
+.likes:hover {
     color: #fff !important;
 	background-color: #212529 !important;
 	border-color: #212529 !important;

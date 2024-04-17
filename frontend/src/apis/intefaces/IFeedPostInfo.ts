@@ -7,4 +7,5 @@ export interface IPostInfo {
     content: string,
     creator: string,
     likes: number;
+    likedByMe: boolean;
 }

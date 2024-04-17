@@ -12,7 +12,6 @@ function App() {
   useEffect(() => {
     const feed = FeedAPI.getAllPosts();
     feed.then(response => {
-      console.log(response);
       setAccessAllowed(true);
       setFeedPosts(response);
     }).catch(() => {})

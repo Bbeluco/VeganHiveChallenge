@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import "./SocialMediaFeed.css"
 import { IFeedPostInfo } from "../../apis/intefaces/IFeedPostInfo";
+import { FeedAPI } from "../../apis/feed/feedAPI";
 
 interface ISocialMediaFeed {
     posts: IFeedPostInfo
@@ -11,15 +12,29 @@ interface ISocialMediaFeed {
 function SocialMediaFeed({ posts }: ISocialMediaFeed): React.JSX.Element {
 
     const likesPostRef = useRef<HTMLButtonElement[]>([]);
+    const countLikesPostRef = useRef<HTMLParagraphElement[]>([]);
 
-    function likePost(index: number) {
-        console.log(likesPostRef.current[index])
-        if(likesPostRef.current[index].className.includes("likes")) {
-            let classes = likesPostRef.current[index].className.split(" likes");
-            likesPostRef.current[index].className = classes[0];
-        } else {
-            likesPostRef.current[index].className += " likes"
-        }
+    function likePost(index: number, postId: number) {
+        likesPostRef.current[index].disabled = true;
+        FeedAPI.likePost(postId)
+            .then(_response => {
+                if(likesPostRef.current[index].className.includes("likes")) {
+                    let classes = likesPostRef.current[index].className.split(" likes");
+                    likesPostRef.current[index].className = classes[0];
+                    let likesQuantity: number = Number.parseInt(countLikesPostRef.current[index].textContent?.split(" ")[0] as string);
+                    countLikesPostRef.current[index].textContent = (likesQuantity - 1) + " likes";
+                } else {
+                    likesPostRef.current[index].className += " likes"
+                    FeedAPI.getSpecificPost(postId)
+                        .then(response => {
+                            console.log(countLikesPostRef.current[index]);
+                            countLikesPostRef.current[index].textContent = response.likes + " likes";
+                        }).catch(err => console.log(err));
+                }
+            })
+            .catch(err => console.log(err));
+
+            likesPostRef.current[index].disabled = false;
     }
 
 
@@ -34,11 +49,11 @@ function SocialMediaFeed({ posts }: ISocialMediaFeed): React.JSX.Element {
                                 <p className="text-justify">{post.content}</p>
                             </div>
                         </div>
-                        <small>{post.likes} likes</small>
+                        <small ref={el => countLikesPostRef.current[index] = el as HTMLParagraphElement}>{post.likes} likes</small>
                         <hr />
                         <div className="interact-with-post-options">
                             <div className="option">
-                                <button className={"btn btn-outline-dark"} onClick={() => likePost(index)} id={`likeButton` + index} ref={el => likesPostRef.current[index] = el as HTMLButtonElement}><AiOutlineLike /> LIKE</button>
+                                <button className={post.likedByMe ? "btn btn-outline-dark likes" : "btn btn-outline-dark"} onClick={() => likePost(index, post.id)} id={`likeButton` + index} ref={el => likesPostRef.current[index] = el as HTMLButtonElement}><AiOutlineLike /> LIKE</button>
                             </div>
 
                             <div className="option">
