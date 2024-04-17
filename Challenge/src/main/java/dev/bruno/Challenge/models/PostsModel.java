@@ -74,6 +74,15 @@ public class PostsModel {
         this.likes.add(model);
     }
 
+    public void removeLikeFromPost(UsersModel model) {
+        for (int userLikePosition = 0; userLikePosition < this.likes.size(); userLikePosition++) {
+            if(this.likes.get(userLikePosition).getUsername().equals(model.getUsername())) {
+                this.likes.remove(userLikePosition);
+                return;
+            }
+        }
+    }
+
     public void addCommentToPost(CommentModel model) {
         this.comments.add(model);
     }

@@ -5,6 +5,7 @@ public class PostDetailsDTO {
     private String content;
     private String creator;
     private int likes;
+    private boolean likedByMe;
 
     public long getId() {
         return id;
@@ -36,5 +37,13 @@ public class PostDetailsDTO {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public boolean isLikedByMe() {
+        return likedByMe;
+    }
+
+    public void setLikedByMe(boolean likedByMe) {
+        this.likedByMe = likedByMe;
     }
 }

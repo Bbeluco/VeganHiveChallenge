@@ -30,7 +30,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public PostsModel doPostExists(long idPost) {
+    public PostsModel getSpecificPost(long idPost) {
         PostsModel post = postRepository.findPostById(idPost);
         return post;
     }

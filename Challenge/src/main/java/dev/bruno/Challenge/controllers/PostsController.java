@@ -67,13 +67,18 @@ public class PostsController {
             return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
         }
 
-        PostsModel post = postService.doPostExists(dto.getIdPost());
+        PostsModel post = postService.getSpecificPost(dto.getIdPost());
         if(post == null) {
             ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("Post do not exists");
             return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
         }
 
-        post.addLikeToPost(user);
+        if(checkIfWasLikedByCurrentUser(authToken, post.getLikes())) {
+            post.removeLikeFromPost(user);
+        } else {
+            post.addLikeToPost(user);
+        }
+
         postService.createOrUpdatePost(post);
 
         return ResponseEntity.ok("");
@@ -81,7 +86,7 @@ public class PostsController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping()
-    public ResponseEntity<AllPostsResponseDTO> getAllPosts() {
+    public ResponseEntity<AllPostsResponseDTO> getAllPosts(@RequestHeader("Authorization") String authToken) {
         AllPostsResponseDTO responseDTO = new AllPostsResponseDTO();
         for (PostsModel post : postService.getAllPosts()) {
             PostDetailsDTO details = new PostDetailsDTO();
@@ -89,11 +94,25 @@ public class PostsController {
             details.setCreator(post.getCreator().getUsername());
             details.setContent(post.getContent());
             details.setLikes(post.getLikes().size());
+            details.setLikedByMe(checkIfWasLikedByCurrentUser(authToken, post.getLikes()));
+
             responseDTO.addPostToResponse(details);
         }
 
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    private boolean checkIfWasLikedByCurrentUser(String authToken, List<UsersModel> usersThatLikedPost) {
+        String currentUser = jwtService.extractUsername(filterHeaderInfo(authToken));
+
+        for(UsersModel user : usersThatLikedPost) {
+            if(user.getUsername().equals(currentUser)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -107,7 +126,7 @@ public class PostsController {
             return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
         }
 
-        PostsModel post = postService.doPostExists(dto.getIdPost());
+        PostsModel post = postService.getSpecificPost(dto.getIdPost());
         if(post == null) {
             ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("Post do not exists");
             return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
@@ -121,5 +140,24 @@ public class PostsController {
                 , comment.getPost().getId()
                 , userThatWillCommentOnPost.getUsername()), HttpStatus.CREATED);
 
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getSpecificPost(@RequestHeader("Authorization") String authToken, @PathVariable long id) {
+        PostsModel post = postService.getSpecificPost(id);
+        if(post == null) {
+            ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("Post do not exists!");
+            return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
+        }
+
+        PostDetailsDTO dto = new PostDetailsDTO();
+        dto.setId(post.getId());
+        dto.setCreator(post.getCreator().getUsername());
+        dto.setContent(post.getContent());
+        dto.setLikes(post.getLikes().size());
+        dto.setLikedByMe(checkIfWasLikedByCurrentUser(authToken, post.getLikes()));
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }
