@@ -41,9 +41,9 @@ public class PostService {
         newComment.setPost(post);
         newComment.setUser(user);
 
-        CommentModel fullInfoComment = commentRepository.save(newComment);
-        post.addCommentToPost(fullInfoComment);
+        post.addCommentToPost(newComment);
+        postRepository.save(post);
 
-        return fullInfoComment;
+        return newComment;
     }
 }

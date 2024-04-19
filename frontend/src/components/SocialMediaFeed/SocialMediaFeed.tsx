@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 import "./SocialMediaFeed.css"
 import { IFeedPostInfo } from "../../apis/intefaces/IFeedPostInfo";
 import { FeedAPI } from "../../apis/feed/feedAPI";
+import Comments from "../Comments/Comments";
 
 interface ISocialMediaFeed {
     posts: IFeedPostInfo
@@ -13,6 +14,9 @@ function SocialMediaFeed({ posts }: ISocialMediaFeed): React.JSX.Element {
 
     const likesPostRef = useRef<HTMLButtonElement[]>([]);
     const countLikesPostRef = useRef<HTMLParagraphElement[]>([]);
+    const commentsPostRef = useRef<HTMLButtonElement[]>([]);
+
+    const [indexCommentsPostToShow, setIndexCommentsPostToShow] = useState<number>();
 
     function likePost(index: number, postId: number) {
         likesPostRef.current[index].disabled = true;
@@ -37,6 +41,14 @@ function SocialMediaFeed({ posts }: ISocialMediaFeed): React.JSX.Element {
             likesPostRef.current[index].disabled = false;
     }
 
+    function openCommentSection(index: number) {
+        if(index == indexCommentsPostToShow) {
+            setIndexCommentsPostToShow(-1);
+        } else {
+            setIndexCommentsPostToShow(index);
+        }
+    }
+
 
     return (
         <div className="feed">
@@ -57,9 +69,10 @@ function SocialMediaFeed({ posts }: ISocialMediaFeed): React.JSX.Element {
                             </div>
 
                             <div className="option">
-                                <button className="btn btn-outline-dark"><FaRegCommentAlt /> COMMENT</button>
+                                <button className="btn btn-outline-dark" onClick={() => openCommentSection(index)} ref={el => commentsPostRef.current[index] = el as HTMLButtonElement}><FaRegCommentAlt /> COMMENT</button>
                             </div>
                         </div>
+                        {index == indexCommentsPostToShow ? <Comments postId={post.id} /> : ""}
                     </div>
                 )
             })}

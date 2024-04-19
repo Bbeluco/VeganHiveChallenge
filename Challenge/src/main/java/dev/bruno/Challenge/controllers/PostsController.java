@@ -160,4 +160,22 @@ public class PostsController {
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/comment/{id}")
+    public ResponseEntity<?> getAllCommentsFromSpecificPost(@PathVariable long id) {
+        PostsModel post = postService.getSpecificPost(id);
+
+        if(post == null) {
+            ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO("Post do not exists!");
+            return new ResponseEntity<>(errorMessageDTO, HttpStatus.NOT_FOUND);
+        }
+
+        GetAllCommentsDTO dto = new GetAllCommentsDTO();
+        for (CommentModel commment : post.getComments()) {
+            dto.addCommentToList(commment.getUser().getUsername(), commment.getComment());
+        }
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
 }

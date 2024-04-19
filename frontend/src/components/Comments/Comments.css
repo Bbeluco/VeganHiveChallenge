@@ -1,0 +1,15 @@
+.authorComment {
+    display: flex;
+    /* text-align: center; */
+    align-items: center;
+}
+
+.commentContent {
+    font-size: small;
+}
+
+p {
+    height: 100%;
+    margin-bottom: 0 !important;
+    margin-right: 10px;
+}
