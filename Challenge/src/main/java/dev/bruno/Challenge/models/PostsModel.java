@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class PostsModel {
 
     @Relationship("HAS_COMMENTS")
     private List<CommentModel> comments = new ArrayList<>();
+
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     public PostsModel() {
     }
@@ -85,5 +88,13 @@ public class PostsModel {
 
     public void addCommentToPost(CommentModel model) {
         this.comments.add(model);
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 }

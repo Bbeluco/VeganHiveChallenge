@@ -3,7 +3,6 @@ package dev.bruno.Challenge.services;
 import dev.bruno.Challenge.models.CommentModel;
 import dev.bruno.Challenge.models.PostsModel;
 import dev.bruno.Challenge.models.UsersModel;
-import dev.bruno.Challenge.repositories.CommentRepository;
 import dev.bruno.Challenge.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,10 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
-    private final CommentRepository commentRepository;
 
     @Autowired
-    public PostService(PostRepository postRepository, CommentRepository commentRepository) {
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
     }
 
     public PostsModel createOrUpdatePost(PostsModel model) {
@@ -27,7 +24,7 @@ public class PostService {
     }
 
     public List<PostsModel> getAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByCreationDateAsc();
     }
 
     public PostsModel getSpecificPost(long idPost) {

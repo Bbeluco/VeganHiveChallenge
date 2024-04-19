@@ -9,6 +9,7 @@ import dev.bruno.Challenge.services.JwtService;
 import dev.bruno.Challenge.services.PostService;
 import dev.bruno.Challenge.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -172,8 +173,8 @@ public class PostsController {
         }
 
         GetAllCommentsDTO dto = new GetAllCommentsDTO();
-        for (CommentModel commment : post.getComments()) {
-            dto.addCommentToList(commment.getUser().getUsername(), commment.getComment());
+        for (int i = post.getComments().size() - 1; i > 0; i--) {
+            dto.addCommentToList(post.getComments().get(i).getUser().getUsername(), post.getComments().get(i).getComment());
         }
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
