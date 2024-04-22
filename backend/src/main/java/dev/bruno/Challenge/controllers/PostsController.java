@@ -173,7 +173,7 @@ public class PostsController {
         }
 
         GetAllCommentsDTO dto = new GetAllCommentsDTO();
-        for (int i = post.getComments().size() - 1; i > 0; i--) {
+        for (int i = post.getComments().size() - 1; i >= 0; i--) {
             dto.addCommentToList(post.getComments().get(i).getUser().getUsername(), post.getComments().get(i).getComment());
         }
 

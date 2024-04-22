@@ -22,7 +22,7 @@ The most difficult part for me was actually in the frontend, specially on keep r
 ## Todos
 - [] Unit test (specially in frontend part)
 - [] Add loading effects
-- [] Reset input field to write a post after create a new one
+- [X] Reset input field to write a post after create a new one
 
 ## Conclusion
 This challenge teaches me a lot. I feel that I'm even more confient working with React and techs that I never see in my life before (like Neo4J).

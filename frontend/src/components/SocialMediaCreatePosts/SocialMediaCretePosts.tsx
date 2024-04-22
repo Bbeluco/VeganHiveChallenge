@@ -16,6 +16,7 @@ function SocialMediaCreatePosts({ updateFeedPosts }: ISocialMediaCreatePosts): R
         }
 
         FeedAPI.createPost(content).then((response) => {
+            postContent.current.value = "";
             updateFeedPosts(response);
         }).catch(err => console.log(err));
     }
